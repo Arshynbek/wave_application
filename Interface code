@@ -1,0 +1,231 @@
+# Program code of software complex
+
+class OOP():
+    def __init__(self):
+        self.win = tk.Tk()
+        self.win.title("wave simulator")
+        self.win.geometry('1024x600')
+        self.createWidgets()
+    def createWidgets(self):
+        tabControl = ttk.Notebook(self.win)
+        tab1 = ttk.Frame(tabControl)
+        tab2 = ttk.Frame(tabControl)
+        tabControl.add(tab1, text='1D case')
+        tabControl.add(tab2, text='2D case')
+        tabControl.pack(expand=1, fill="both")
+        self.monty0 = ttk.LabelFrame(tab1, text='Choose singular coefficents')
+        self.monty0.grid(row=0, column=0,  columnspan=6, padx=4,  pady=4)
+        self.var1 = tk.IntVar()
+        self.var2 = tk.IntVar()
+        self.var3 = tk.IntVar()
+        self.var4 = tk.IntVar()
+        ttk.Checkbutton(self.monty0, text="a(t)",variable=self.var1,width=10,offvalue=0).grid(row=0, column=0)
+        ttk.Checkbutton(self.monty0, text="b(t)",variable=self.var2,width=10).grid(row=0, column=1)
+        ttk.Checkbutton(self.monty0, text="c(t)",variable=self.var3,width=10).grid(row=0, column=2)
+        ttk.Checkbutton(self.monty0, text="d(t)",variable=self.var4,width=10).grid(row=0, column=3)
+        
+        self.monty1 = ttk.LabelFrame(tab1, text='Set domain size')
+        self.monty1.grid(row=1, rowspan=2, column=0,  columnspan=6, padx=4,  pady=4)
+        
+        ttk.Label(self.monty1, text="Domain legth, Lx=").grid(row=1, column=0,  pady=4)
+        self.lx_f=ttk.Entry(self.monty1,width=11)
+        self.lx_f.grid(row=1, column=1)
+        self.lx_f.insert(10, 20.0)
+    
+        ttk.Label(self.monty1, text="Time legth, Lt=").grid(row=1, column=2,  pady=4)
+        self.lt_f=ttk.Entry(self.monty1,width=11)
+        self.lt_f.grid(row=1, column=3)
+        self.lt_f.insert(10, 2.0)
+        
+        ttk.Label(self.monty1, text="Domain step, h=").grid(row=2, column=0,  pady=4)
+        self.h_f=ttk.Entry(self.monty1,width=11)
+        self.h_f.grid(row=2, column=1)
+        self.h_f.insert(10, 0.05)
+        
+        ttk.Label(self.monty1, text="Time step, tau=").grid(row=2, column=2,  pady=4)
+        self.t_f=ttk.Entry(self.monty1,width=11)
+        self.t_f.grid(row=2, column=3)
+        self.t_f.insert(10, 0.025)
+        
+        self.monty2 = ttk.LabelFrame(tab1, text='Set parametrs')
+        self.monty2.grid( row=3, column=0, columnspan=6, padx=4,  pady=4)
+        
+        ttk.Label(self.monty2, text="Eps").grid(row=3, column=0,  pady=4)
+        self.ep_f=ttk.Entry(self.monty2,width=10)
+        self.ep_f.grid(row=3, column=1)
+        self.ep_f.insert(10, 0.1)
+    
+        ttk.Label(self.monty2, text="Delta").grid(row=3, column=2,  pady=4)
+        self.d_f=ttk.Entry(self.monty2,width=10)
+        self.d_f.grid(row=3, column=3)
+        self.d_f.insert(10, 1.0)
+        
+        ttk.Label(self.monty2, text="Center").grid(row=3, column=4,  pady=4,padx=4)
+        self.c_f=ttk.Entry(self.monty2,width=10)
+        self.c_f.grid(row=3, column=5)
+        self.c_f.insert(10, 5)
+        
+        self.monty3 = ttk.LabelFrame(tab1, text='Set exponential parametrs')
+        self.monty3.grid(row=4, column=0, columnspan=6, padx=4,  pady=4)
+        
+        ttk.Label(self.monty3, text="Sb").grid(row=4, column=0,  pady=4)
+        self.Sb_f=ttk.Entry(self.monty3,width=11)
+        self.Sb_f.grid(row=4, column=1,padx=8)
+        self.Sb_f.insert(10, 1.5)
+        
+        ttk.Label(self.monty3, text="Sc").grid(row=4, column=2,  pady=4)
+        self.Sc_f=ttk.Entry(self.monty3,width=11)
+        self.Sc_f.grid(row=4, column=3,padx=8)
+        self.Sc_f.insert(10, 1.5)
+        
+    
+        ttk.Label(self.monty3, text="Sd").grid(row=4, column=4,  pady=4,padx=8)
+        self.Sd_f=ttk.Entry(self.monty3,width=11)
+        self.Sd_f.grid(row=4, column=5)
+        self.Sd_f.insert(10, 1.5)
+        
+        self.monty4 = ttk.LabelFrame(tab1, text='Status screen')
+        self.monty4.grid(row=5, column=0,  columnspan=6, padx=4,  pady=4)
+        scrollb = ttk.Scrollbar(self.monty4)
+        scrollb.grid(row=5, column=0, columnspan=4, pady=4)
+        self.listbox = tk.Listbox(self.monty4,width=50)
+        self.listbox.grid(row=5, column=0, columnspan=4, pady=2, padx=8)
+        self.listbox.config(yscrollcommand=scrollb.set)
+        scrollb.config(command=self.listbox.yview)
+                
+     
+        self.monty5 = ttk.LabelFrame(tab1, text='Control bar')
+        self.monty5.grid(row=6, column=0,  columnspan=6, padx=4,  pady=4)
+        ttk.Button(self.monty5,text="Start", width=25,command=self.esepte).grid(row=6, column=0, columnspan=3)
+        ttk.Button(self.monty5, text='Exit', width=25, command=quit).grid(row=6, column=3,columnspan=3)
+        
+        
+        
+        
+        self.monty6 = ttk.LabelFrame(tab1, text='Equation',width=512)
+        self.monty6.grid(row=0,column=6, columnspan=3, pady=4) 
+
+        load = Image.open("wave1d.jpg")
+        render = ImageTk.PhotoImage(load)
+        img = ttk.Label(self.monty6, image=render)
+        img.image = render
+        img.grid(row=0, column=6,columnspan=3,rowspan=2)
+          
+        self.monty7 = ttk.LabelFrame(tab1, text='Result windows')
+        self.monty7.grid(row=1,column=6, columnspan=2, padx=4,  pady=4, rowspan=5)
+        self.c = tk.Canvas(self.monty7, width = 600, height = 400, bg = 'white')
+        self.c.grid(row=1, column=6, columnspan=2, rowspan=5)
+        
+        
+        self.monty8 = ttk.LabelFrame(tab1, text='  ')
+        self.monty8.grid(row=6,  column=6,  padx=4,  pady=4)
+        ttk.Button(self.monty8,text="Save graphic", width=25,command=self.esepte).grid(row=6, column=6)
+        ttk.Button(self.monty8, text='Save animation', width=25, command=quit).grid(row=6, column=7)
+# 
+#        menuBar = Menu(tab1)
+#        self.win.config(menu=menuBar)
+#        fileMenu = Menu(menuBar, tearoff=0)
+#        menuBar.add_cascade(label="File", menu=fileMenu)
+#        helpMenu = Menu(menuBar, tearoff=0)
+#        menuBar.add_cascade(label="Help", menu=helpMenu)
+        #__________________________________________________________________________ 2D______________________________
+        self.tab2_0 = ttk.LabelFrame(tab2, text='Choose singular coefficents')
+        self.tab2_0.grid(row=0, column=0,  columnspan=6, padx=4,  pady=4)
+        self.va1 = tk.IntVar()
+        self.va2 = tk.IntVar()
+        self.va3 = tk.IntVar()
+        self.va4 = tk.IntVar()
+        ttk.Checkbutton(self.tab2_0, text="a(t)",variable=self.va1,width=10,offvalue=0).grid(row=0, column=0)
+        ttk.Checkbutton(self.tab2_0, text="b(t)",variable=self.va2,width=10).grid(row=0, column=1)
+        ttk.Checkbutton(self.tab2_0, text="c(t)",variable=self.va3,width=10).grid(row=0, column=2)
+        ttk.Checkbutton(self.tab2_0, text="d(t)",variable=self.va4,width=10).grid(row=0, column=3)
+        
+        self.tab2_1 = ttk.LabelFrame(tab2, text='Set domain size')
+        self.tab2_1.grid(row=1, rowspan=2, column=0,  columnspan=6, padx=4,  pady=4)
+        
+        ttk.Label(self.tab2_1, text="Domain legth, Lx=Ly=").grid(row=1, column=0,  pady=4)
+        self.lx_f=ttk.Entry(self.tab2_1,width=10)
+        self.lx_f.grid(row=1, column=1)
+        self.lx_f.insert(10, 100.0)
+    
+        ttk.Label(self.tab2_1, text="Time legth, Lt=").grid(row=1, column=2,  pady=4)
+        self.lt_f=ttk.Entry(self.tab2_1,width=10)
+        self.lt_f.grid(row=1, column=3)
+        self.lt_f.insert(10, 5.0)
+        
+        ttk.Label(self.tab2_1, text="Domain step, h=").grid(row=2, column=0,  pady=4)
+        self.h_f=ttk.Entry(self.tab2_1,width=10)
+        self.h_f.grid(row=2, column=1)
+        self.h_f.insert(10, 0.5)
+        
+        ttk.Label(self.tab2_1, text="Time step, tau=").grid(row=2, column=2,  pady=4)
+        self.t_f=ttk.Entry(self.tab2_1,width=10)
+        self.t_f.grid(row=2, column=3)
+        self.t_f.insert(10, 0.5)
+        
+        self.tab2_2 = ttk.LabelFrame(tab2, text='Set parametrs')
+        self.tab2_2.grid( row=3, column=0, columnspan=6, padx=4,  pady=4)
+        
+        ttk.Label(self.tab2_2, text="Eps").grid(row=3, column=0,  pady=4)
+        self.ep_f=ttk.Entry(self.tab2_2,width=10)
+        self.ep_f.grid(row=3, column=1)
+        self.ep_f.insert(10, 0.1)
+    
+        ttk.Label(self.tab2_2, text="Delta").grid(row=3, column=2,  pady=4)
+        self.d_f=ttk.Entry(self.tab2_2,width=10)
+        self.d_f.grid(row=3, column=3)
+        self.d_f.insert(10, 1.0)
+        
+        ttk.Label(self.tab2_2, text="Center").grid(row=3, column=4,  pady=4,padx=4)
+        self.c_f=ttk.Entry(self.tab2_2,width=10)
+        self.c_f.grid(row=3, column=5)
+        self.c_f.insert(10, 5)
+        
+        self.tab2_3 = ttk.LabelFrame(tab2, text='Set exponential parametrs')
+        self.tab2_3.grid(row=4, column=0, columnspan=6, padx=4,  pady=4)
+        
+        ttk.Label(self.tab2_3, text="Sb").grid(row=4, column=0,  pady=4)
+        self.Sb_f=ttk.Entry(self.tab2_3,width=11)
+        self.Sb_f.grid(row=4, column=1,padx=8)
+        self.Sb_f.insert(10, 1.5)
+        
+        ttk.Label(self.tab2_3, text="Sc").grid(row=4, column=2,  pady=4)
+        self.Sc_f=ttk.Entry(self.tab2_3,width=11)
+        self.Sc_f.grid(row=4, column=3,padx=8)
+        self.Sc_f.insert(10, 1.5)
+        
+    
+        ttk.Label(self.tab2_3, text="Sd").grid(row=4, column=4,  pady=4,padx=8)
+        self.Sd_f=ttk.Entry(self.tab2_3,width=11)
+        self.Sd_f.grid(row=4, column=5)
+        self.Sd_f.insert(10, 1.5)
+        
+        self.tab2_4 = ttk.LabelFrame(tab2, text='Status screen')
+        self.tab2_4.grid(row=5, column=0,  columnspan=6, padx=4,  pady=4)
+        self.listbox2 = tk.Listbox(self.tab2_4,width=50)
+        self.listbox2.grid(row=5, column=0, columnspan=4, pady=2, padx=8)
+        self.listbox2.config(yscrollcommand=scrollb.set)
+        
+                
+     
+        self.tab2_5 = ttk.LabelFrame(tab2, text='Control bar')
+        self.tab2_5.grid(row=6, column=0,  columnspan=6, padx=4,  pady=4)
+        ttk.Button(self.tab2_5,text="Start", width=25,command=self.esepte2).grid(row=6, column=0, columnspan=3)
+        ttk.Button(self.tab2_5, text='Exit', width=25, command=quit).grid(row=6, column=3,columnspan=3)
+        self.tab2_6 = ttk.LabelFrame(tab2, text='Equation',width=512)
+        self.tab2_6.grid(row=0,column=6, columnspan=3, pady=4) 
+        load = Image.open("wave2d.jpg")
+        render = ImageTk.PhotoImage(load)
+        img = ttk.Label(self.tab2_6, image=render)
+        img.image = render
+        img.grid(row=0, column=6,columnspan=3,rowspan=2)
+        self.tab2_7 = ttk.LabelFrame(tab2, text='Result windows')
+        self.tab2_7.grid(row=1,column=6, columnspan=2, padx=4,  pady=4, rowspan=5)
+        self.c = tk.Canvas(self.tab2_7, width = 600, height = 400, bg = 'white')
+        self.c.grid(row=1, column=6, columnspan=2, rowspan=5)
+            
+        self.tab2_8 = ttk.LabelFrame(tab2, text='  ')
+        self.tab2_8.grid(row=6,  column=6,  padx=4,  pady=4)
+        ttk.Button(self.tab2_8,text="Save graphic", width=25,command=self.esepte2).grid(row=6, column=6)
+        ttk.Button(self.tab2_8, text='Save animation', width=25, command=quit).grid(row=6, column=7)
+        
